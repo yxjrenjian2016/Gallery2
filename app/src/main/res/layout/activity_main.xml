@@ -77,7 +77,6 @@
             android:layout_gravity="end"
             android:divider="#EEE3D9"
             android:dividerHeight="1px"
-            
             android:background="@android:color/background_light">
         </ListView>
 
