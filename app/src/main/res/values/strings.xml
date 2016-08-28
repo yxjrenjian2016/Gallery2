@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Gallery</string>
+    <string name="no_picture_found">No picture found</string>
+    <string name="piece">piece</string>
+    <string name="loading">Loading...</string>
+    <string name="udisk">Udisk</string>
+    <string name="sd_card">Sdcard</string>
+
+</resources>

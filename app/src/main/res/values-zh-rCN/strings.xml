@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">图片浏览器</string>
+    <string name="no_picture_found">没有扫描到图片</string>
+    <string name="piece">张</string>
+    <string name="loading">正在加载...</string>
+    <string name="udisk">u盘</string>
+    <string name="sd_card">sd卡</string>
+
+</resources>
