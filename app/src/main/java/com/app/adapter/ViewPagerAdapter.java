@@ -35,7 +35,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         ImageView iv =new ImageView(mContext);
         iv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageLoader.getInstance(mContext).displayImage("file://"+mResources.get(position),iv,ImageLoader.getDefautDisplayImageOptions());
         container.addView(iv);
         return iv;

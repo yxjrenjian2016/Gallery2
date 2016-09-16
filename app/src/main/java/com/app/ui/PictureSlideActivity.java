@@ -64,6 +64,7 @@ public class PictureSlideActivity extends BaseActivity<PictureSlidePresenter> {
 
         mViewPager = (ViewPager) findViewById(R.id.viewer);
         mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setPageMargin(10);
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setCurrentItem(index);
 
