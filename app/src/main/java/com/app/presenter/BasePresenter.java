@@ -16,7 +16,7 @@ public class BasePresenter {
     }
 
     public void clear(){
-        EventBus.getDefault().unregister(this);
+       // EventBus.getDefault().unregister(this);
     }
 
 

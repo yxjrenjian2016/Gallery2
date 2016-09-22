@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent" >
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/id_drawer"
@@ -13,26 +12,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <GridView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/id_gridView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/id_bottom_ly"
-                android:cacheColorHint="@android:color/transparent"
-                android:clipChildren="true"
-                android:gravity="center"
-                android:horizontalSpacing="3dip"
-                android:listSelector="@android:color/transparent"
-                android:numColumns="3"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="3dip"></GridView>
+                ></android.support.v7.widget.RecyclerView>
 
             <RelativeLayout
                 android:id="@+id/id_bottom_ly"
                 android:layout_width="match_parent"
-                android:layout_height="50dip"
+                android:layout_height="@dimen/gl_50_dp"
                 android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/sider_bar"
                 android:background="#e0000000"
                 android:visibility="gone">
 

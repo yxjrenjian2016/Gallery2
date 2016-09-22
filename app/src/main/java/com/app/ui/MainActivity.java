@@ -1,31 +1,29 @@
 package com.app.ui;
 
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.adapter.CommonAdapter;
-import com.app.adapter.GridAdapter;
+import com.app.adapter.RecyclerAdapter;
+import com.app.adapter.SpacesItemDecoration;
 import com.app.base.BaseActivity;
 import com.app.gallery.R;
 import com.app.presenter.MainPresenter;
-import com.app.receiver.SDReceiver;
 import com.app.utils.FileUtils;
 import com.app.utils.ViewHolder;
 import com.app.viewinterface.IMainInterface;
 
-import java.io.File;
 import java.util.List;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements IMainInterface {
@@ -33,9 +31,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
 
     //private ProgressDialog mProgressDialog;
 
-    private GridView mGirdView;
-    private GridAdapter mAdapter;
-
+    private RecyclerView mRecyclerView;
+    private RecyclerAdapter mAdapter;
     private RelativeLayout mBottomLy;
 
     private TextView mChooseDirTx;
@@ -44,7 +41,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
 
     private DrawerLayout mDrawerLayout;
     private ListView mListView;
-    private SDReceiver mReceiver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,39 +51,28 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         initView();
 
         initData();
-
-        registerReceiver();
     }
 
     @Override
     public void showData(List<String> paths) {
 
-        mAdapter = new GridAdapter(MainActivity.this, paths, R.layout.grid_item);
-        mGirdView.setAdapter(mAdapter);
-        mGirdView.setVisibility(View.VISIBLE);
+        mAdapter = new RecyclerAdapter(MainActivity.this, paths);
+        mRecyclerView.setAdapter(mAdapter);
+         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelOffset(R.dimen.gl_3_dp)));
+
+        mRecyclerView.setVisibility(View.VISIBLE);
+
         mBottomLy.setVisibility(View.VISIBLE);
         if( paths != null && paths.size() > 0){
             String path = paths.get(0);
-            File f= new File(path);
             mChooseDirTx.setText(FileUtils.getDisplayTextForExtPath(MainActivity.this,FileUtils.getParentFile(path).getAbsolutePath()));
         }
 
         mImageCountTx.setText(paths.size() + getResources().getString(R.string.piece));
         mNoPictureTx.setVisibility(View.GONE);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        Log.v(TAG, "onSaveInstanceState++");
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        Log.v(TAG, "onRestoreInstanceState++");
     }
 
     @Override
@@ -96,7 +82,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         }
         mNoPictureTx.setVisibility(View.VISIBLE);
         mBottomLy.setVisibility(View.GONE);
-        mGirdView.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
@@ -174,27 +160,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
     }
 
     /**
-     * 注册广播 sd卡挂载/卸载
-     */
-    private void registerReceiver(){
-
-        if( mReceiver == null) {
-            mReceiver = new SDReceiver();
-
-            IntentFilter f = new IntentFilter();
-            f.addAction(Intent.ACTION_MEDIA_EJECT);
-            f.addAction(Intent.ACTION_MEDIA_MOUNTED);
-            f.addAction(Intent.ACTION_MEDIA_CHECKING);
-            f.addAction(Intent.ACTION_MEDIA_REMOVED);
-            f.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
-
-            f.addDataScheme("file");
-            f.addDataScheme("content");
-            this.registerReceiver(mReceiver, f);
-        }
-    }
-
-    /**
      * 初始化View
      */
     private void initView() {
@@ -202,7 +167,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
 
-        mGirdView = (GridView) findViewById(R.id.id_gridView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.id_gridView);
         mChooseDirTx = (TextView) findViewById(R.id.id_choose_dir);
         mImageCountTx = (TextView) findViewById(R.id.id_total_count);
         mNoPictureTx = (TextView)findViewById(R.id.no_picture_imply); 
@@ -225,10 +190,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         super.onDestroy();
 
         Log.v(TAG,"onDestroy +++ ");
-        if(mReceiver != null){
-            unregisterReceiver(mReceiver);
-            mReceiver = null;
-        }
+
         if( mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
             mDrawerLayout.closeDrawer(Gravity.RIGHT);
         }
