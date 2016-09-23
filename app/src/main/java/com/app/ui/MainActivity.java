@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,14 +15,13 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.app.adapter.CommonAdapter;
+import com.app.adapter.ListAdapter;
 import com.app.adapter.RecyclerAdapter;
 import com.app.adapter.SpacesItemDecoration;
 import com.app.base.BaseActivity;
 import com.app.gallery.R;
 import com.app.presenter.MainPresenter;
 import com.app.utils.FileUtils;
-import com.app.utils.ViewHolder;
 import com.app.viewinterface.IMainInterface;
 
 import java.util.List;
@@ -33,20 +33,20 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
 
     private RecyclerView mRecyclerView;
     private RecyclerAdapter mAdapter;
-    private RelativeLayout mBottomLy;
 
-    private TextView mChooseDirTx;
-    private TextView mImageCountTx;
     private TextView mNoPictureTx;
 
     private DrawerLayout mDrawerLayout;
     private ListView mListView;
+    private ListAdapter mListAdapter;
 
+    private Toolbar mToolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         initView();
 
@@ -65,13 +65,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
 
         mRecyclerView.setVisibility(View.VISIBLE);
 
-        mBottomLy.setVisibility(View.VISIBLE);
         if( paths != null && paths.size() > 0){
             String path = paths.get(0);
-            mChooseDirTx.setText(FileUtils.getDisplayTextForExtPath(MainActivity.this,FileUtils.getParentFile(path).getAbsolutePath()));
+            mToolBar.setTitle(FileUtils.getDisplayTextForExtPath(MainActivity.this,FileUtils.getParentFile(path).getAbsolutePath()));
+            mToolBar.setSubtitle(paths.size() + getResources().getString(R.string.piece));
         }
 
-        mImageCountTx.setText(paths.size() + getResources().getString(R.string.piece));
+        //mImageCountTx.setText(paths.size() + getResources().getString(R.string.piece));
         mNoPictureTx.setVisibility(View.GONE);
     }
 
@@ -81,7 +81,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
             return;
         }
         mNoPictureTx.setVisibility(View.VISIBLE);
-        mBottomLy.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.GONE);
     }
 
@@ -93,10 +92,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         }
 
         mAdapter.updateData(paths);
-        mImageCountTx.setText(paths.size() + getResources().getString(R.string.piece));
+        mToolBar.setSubtitle(paths.size() + getResources().getString(R.string.piece));
         if( paths != null && paths.size() > 0){
             String path = paths.get(0);
-            mChooseDirTx.setText(FileUtils.getDisplayTextForExtPath(MainActivity.this,FileUtils.getParentFile(path).getAbsolutePath()));
+            mToolBar.setTitle(FileUtils.getDisplayTextForExtPath(MainActivity.this,FileUtils.getParentFile(path).getAbsolutePath()));
         }
 
     }
@@ -107,15 +106,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
             return;
         }
         mDrawerLayout.openDrawer(Gravity.RIGHT);
-        mListView.setAdapter(new CommonAdapter<String>(MainActivity.this, list, R.layout.list_dir_item) {
-            @Override
-            public void convert(ViewHolder helper, String item, int pos) {
-
-                helper.setText(R.id.id_dir_item_name, FileUtils.getDisplayTextForExtPath((MainActivity.this), FileUtils.getParentFile(item).getAbsolutePath()));
-                helper.setImageByUrl(R.id.id_dir_item_image, "file://" + item);
-                //helper.setText(R.id.id_dir_item_count, item.getCount() + "张");
-            }
-        });
+        if( null == mListAdapter ){
+            mListAdapter = new ListAdapter(MainActivity.this, list, R.layout.list_dir_item);
+        }
+        mListView.setAdapter(mListAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -152,6 +146,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         }*/
     }
 
+    @Override
+    public void updateDrawerData(List<String> list) {
+        if( mListAdapter != null){
+            mListAdapter.updateData(list);
+        }
+    }
+
     private void initData(){
 
         mPresenter = new MainPresenter(this,this);
@@ -164,20 +165,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
      */
     private void initView() {
 
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+        mToolBar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mToolBar);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_gridView);
-        mChooseDirTx = (TextView) findViewById(R.id.id_choose_dir);
-        mImageCountTx = (TextView) findViewById(R.id.id_total_count);
-        mNoPictureTx = (TextView)findViewById(R.id.no_picture_imply); 
 
-        mBottomLy = (RelativeLayout) findViewById(R.id.id_bottom_ly);
-        mBottomLy.setOnClickListener(new OnClickListener() {
+        mNoPictureTx = (TextView)findViewById(R.id.no_picture_imply);
+
+        mToolBar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                mPresenter.showAllImagePath();
+                mPresenter.showAllFolderPath();
             }
         });
 

@@ -18,9 +18,9 @@ public interface IMainPresenter {
 
 
     /**
-     * 点击显示路径列表
+     * 显示所有文件夹列表
      */
-    void showAllImagePath();
+    void showAllFolderPath();
 
     /**
      * 清除所有图片

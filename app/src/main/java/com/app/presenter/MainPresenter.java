@@ -37,24 +37,12 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
     private SDReceiver mReceiver;
     private  MediaObserver mObserver;
     private Context mContext;
-    private UIHandler mHandler;
 
     /**
      * key:文件夹 value：文件夹下的图片文件绝对路径
      */
     private HashMap<String, List<String>> mPicFolders = new HashMap<String, List<String>>();
 
-    private static class UIHandler extends Handler{
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case MEDIASTORE_CHANGE:
-
-                    break;
-            }
-        }
-    }
 
     public MainPresenter(Context context,IMainInterface mainInterface){
         super();
@@ -85,7 +73,7 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
     }
 
     @Override
-    public void showAllImagePath() {
+    public void showAllFolderPath() {
         if( mPicFolders != null){
             Set<String> keyset = mPicFolders.keySet();
             List<String > list= new ArrayList<String>();

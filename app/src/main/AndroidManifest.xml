@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.app.ui.PictureSlideActivity"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
     </application>
 

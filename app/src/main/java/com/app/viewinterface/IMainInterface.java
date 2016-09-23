@@ -46,4 +46,10 @@ public interface IMainInterface {
      * 隐藏进度条
      */
     void hideDialog();
+
+    /**
+     * 更新文件夹列表数据
+     * @param list
+     */
+    void updateDrawerData(List<String> list);
 }
