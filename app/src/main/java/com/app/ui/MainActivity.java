@@ -101,34 +101,17 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
     }
 
     @Override
-    public void openDrawer(final List<String> list) {
-        if( this.isFinishing()){
-            return;
+    public void openDrawer() {
+        if(!mDrawerLayout.isDrawerVisible(Gravity.RIGHT)){
+            mDrawerLayout.openDrawer(Gravity.RIGHT);
         }
-        mDrawerLayout.openDrawer(Gravity.RIGHT);
-        if( null == mListAdapter ){
-            mListAdapter = new ListAdapter(MainActivity.this, list, R.layout.list_dir_item);
-        }
-        mListView.setAdapter(mListAdapter);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mPresenter.refreshImage(list.get(position));
-
-                if( mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
-                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
-                }
-            }
-        });
-
     }
 
     @Override
     public void closeDrawer() {
-       if(mDrawerLayout.isDrawerVisible(Gravity.RIGHT)){
-           mDrawerLayout.closeDrawer(Gravity.RIGHT);
-       }
+        if(mDrawerLayout.isDrawerVisible(Gravity.RIGHT)){
+            mDrawerLayout.closeDrawer(Gravity.RIGHT);
+        }
     }
 
     @Override
@@ -147,10 +130,22 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
     }
 
     @Override
-    public void updateDrawerData(List<String> list) {
-        if( mListAdapter != null){
-            mListAdapter.updateData(list);
+    public void updateDrawerData(final List<String> list) {
+        if( null == mListAdapter ){
+            mListAdapter = new ListAdapter(MainActivity.this, list, R.layout.list_dir_item);
         }
+        mListView.setAdapter(mListAdapter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mPresenter.refreshImage(list.get(position));
+
+                if( mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                }
+            }
+        });
     }
 
     private void initData(){
@@ -171,14 +166,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         mRecyclerView = (RecyclerView) findViewById(R.id.id_gridView);
 
         mNoPictureTx = (TextView)findViewById(R.id.no_picture_imply);
-
-        mToolBar.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mPresenter.showAllFolderPath();
-            }
-        });
 
         mDrawerLayout = (DrawerLayout)findViewById(R.id.id_drawer);
         mListView = (ListView)findViewById(R.id.id_list);

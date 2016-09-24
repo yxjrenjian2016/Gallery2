@@ -27,9 +27,8 @@ public interface IMainInterface {
 
     /**
      * 打开抽屉
-     * @param list
      */
-    void openDrawer(List<String> list);
+    void openDrawer();
 
     /**
      * 关闭抽屉

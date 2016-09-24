@@ -20,7 +20,7 @@ public interface IMainPresenter {
     /**
      * 显示所有文件夹列表
      */
-    void showAllFolderPath();
+    void refreshFolderPath();
 
     /**
      * 清除所有图片

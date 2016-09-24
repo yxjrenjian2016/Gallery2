@@ -56,9 +56,8 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
 
     @Override
     public void requestImage() {
-        mInterface.closeDrawer();
         requestImageFromModel(this.getClass().getName());
-
+        mInterface.closeDrawer();
     }
 
     @Override
@@ -73,7 +72,7 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
     }
 
     @Override
-    public void showAllFolderPath() {
+    public void refreshFolderPath() {
         if( mPicFolders != null){
             Set<String> keyset = mPicFolders.keySet();
             List<String > list= new ArrayList<String>();
@@ -84,7 +83,7 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
                     list.add(l.get(0));
                 }
             }
-            mInterface.openDrawer(list);
+            mInterface.updateDrawerData(list);
         }
 
     }
@@ -108,18 +107,21 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
     private void getImage(HashMap<String, List<String>> hashMap){
         Set<String> keyset = hashMap.keySet();
         String key = keyset.iterator().next();
-        List<String> list= hashMap.get(key);
+        List<String> imgList= hashMap.get(key);
         mInterface.hideDialog();
-        if(list != null && list.size() > 0){
+        if(imgList != null && imgList.size() > 0){
             if( (mPicFolders != null) && (mPicFolders.size() > 0)){//不是第一次
-                mInterface.updateData(list);
+                mInterface.updateData(imgList);
             }else {
-                mInterface.showData(list);//第一次加载数据
+                mInterface.showData(imgList);//第一次加载数据
             }
             mPicFolders = hashMap;
         }else {
             mInterface.showNoData();
         }
+
+        refreshFolderPath();
+
     }
 
     @Subscriber(tag = Constants.GET_NO_IMAGE_RESULT, mode = ThreadMode.MAIN)

@@ -17,10 +17,7 @@
  */
 package com.app.ui;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -29,7 +26,6 @@ import com.app.adapter.ViewPagerAdapter;
 import com.app.base.BaseActivity;
 import com.app.gallery.R;
 import com.app.presenter.PictureSlidePresenter;
-
 
 import java.util.List;
 
