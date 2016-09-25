@@ -35,8 +35,8 @@
 
         <ListView
             android:id="@+id/id_list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="end"
             android:background="@android:color/background_light"
             android:divider="#EEE3D9"
@@ -44,12 +44,10 @@
 
     </android.support.v4.widget.DrawerLayout>
 
-    <TextView
-        android:id="@+id/no_picture_imply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/no_picture_found"
-        android:visibility="gone" />
+    <com.app.view.LoadingLayout
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"></com.app.view.LoadingLayout>
 
 </RelativeLayout>

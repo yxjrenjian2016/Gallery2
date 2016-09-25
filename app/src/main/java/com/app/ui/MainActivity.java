@@ -5,14 +5,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.adapter.ListAdapter;
@@ -22,6 +19,7 @@ import com.app.base.BaseActivity;
 import com.app.gallery.R;
 import com.app.presenter.MainPresenter;
 import com.app.utils.FileUtils;
+import com.app.view.LoadingLayout;
 import com.app.viewinterface.IMainInterface;
 
 import java.util.List;
@@ -29,12 +27,12 @@ import java.util.List;
 public class MainActivity extends BaseActivity<MainPresenter> implements IMainInterface {
     private static final String TAG = "main";
 
-    //private ProgressDialog mProgressDialog;
+    private LoadingLayout mLoadingLayout;
 
     private RecyclerView mRecyclerView;
     private RecyclerAdapter mAdapter;
 
-    private TextView mNoPictureTx;
+    //private TextView mNoPictureTx;
 
     private DrawerLayout mDrawerLayout;
     private ListView mListView;
@@ -58,7 +56,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
 
         mAdapter = new RecyclerAdapter(MainActivity.this, paths);
         mRecyclerView.setAdapter(mAdapter);
-         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelOffset(R.dimen.gl_3_dp)));
@@ -72,7 +70,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         }
 
         //mImageCountTx.setText(paths.size() + getResources().getString(R.string.piece));
-        mNoPictureTx.setVisibility(View.GONE);
+        //mNoPictureTx.setVisibility(View.GONE);
     }
 
     @Override
@@ -80,7 +78,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         if( this.isFinishing()){
             return;
         }
-        mNoPictureTx.setVisibility(View.VISIBLE);
+        mLoadingLayout.setState(LoadingLayout.LOADING_ERROR);
+        //mNoPictureTx.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
     }
 
@@ -115,18 +114,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
     }
 
     @Override
-    public void showDialog() {
+    public void showProgress() {
         if( this.isFinishing()){
             return;
         }
-        //mProgressDialog = ProgressDialog.show(this, null, getResources().getString(R.string.loading));
+        mLoadingLayout.setState(LoadingLayout.START_LOADING);
     }
 
     @Override
-    public void hideDialog() {
-        /*if( mProgressDialog!= null){
-            mProgressDialog.dismiss();
-        }*/
+    public void hideProgress() {
+        mLoadingLayout.setState(LoadingLayout.LOADING_SUCCESS);
     }
 
     @Override
@@ -159,16 +156,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
      * 初始化View
      */
     private void initView() {
+        Log.v(TAG,"initView+++");
+        mLoadingLayout = (LoadingLayout)findViewById(R.id.progress);
 
         mToolBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolBar);
-
         mRecyclerView = (RecyclerView) findViewById(R.id.id_gridView);
 
-        mNoPictureTx = (TextView)findViewById(R.id.no_picture_imply);
+        //mNoPictureTx = (TextView)findViewById(R.id.no_picture_imply);
 
         mDrawerLayout = (DrawerLayout)findViewById(R.id.id_drawer);
         mListView = (ListView)findViewById(R.id.id_list);
+
 
     }
     @Override

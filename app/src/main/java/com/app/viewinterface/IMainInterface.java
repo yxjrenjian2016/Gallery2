@@ -39,12 +39,12 @@ public interface IMainInterface {
     /**
      * 显示进度条
      */
-    void showDialog();
+    void showProgress();
 
     /**
      * 隐藏进度条
      */
-    void hideDialog();
+    void hideProgress();
 
     /**
      * 更新文件夹列表数据

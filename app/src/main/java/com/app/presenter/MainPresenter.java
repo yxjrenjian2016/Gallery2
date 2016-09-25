@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -56,8 +55,9 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
 
     @Override
     public void requestImage() {
+
+        mInterface.showProgress();
         requestImageFromModel(this.getClass().getName());
-        mInterface.closeDrawer();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
         Log.v(TAG, "f+++" + f.getName());
         List<String> paths = mPicFolders.get(f.getAbsolutePath());
         mInterface.updateData(paths);
-        mInterface.hideDialog();
+        mInterface.hideProgress();
 
     }
 
@@ -97,9 +97,7 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
     @Subscriber(tag = Constants.REQUEST_IMAGE, mode = ThreadMode.MAIN)
     public void requestImageFromModel(String from) {
         Log.v(TAG,"requestImageFromModel+"+from);
-        if( from.equals(this.getClass().getName())){
-            mInterface.showDialog();
-        }
+
         mModel.getAllImage();
     }
 
@@ -108,7 +106,7 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
         Set<String> keyset = hashMap.keySet();
         String key = keyset.iterator().next();
         List<String> imgList= hashMap.get(key);
-        mInterface.hideDialog();
+        mInterface.hideProgress();
         if(imgList != null && imgList.size() > 0){
             if( (mPicFolders != null) && (mPicFolders.size() > 0)){//不是第一次
                 mInterface.updateData(imgList);
@@ -131,7 +129,7 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
         if( mPicFolders != null){
             mPicFolders.clear();
         }
-        mInterface.hideDialog();
+        mInterface.hideProgress();
         mInterface.showNoData();
         mInterface.closeDrawer();
     }
@@ -140,6 +138,7 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
      * 注册广播 sd卡挂载/卸载
      */
     private void registerReceiver(){
+        Log.v(TAG,"registerReceiver start++");
 
         if( mReceiver == null) {
             mReceiver = new SDReceiver();
@@ -155,11 +154,15 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
             f.addDataScheme("content");
             mContext.registerReceiver(mReceiver, f);
         }
+
+        Log.v(TAG,"registerReceiver end++");
     }
 
     private void registerObserver(){
+        Log.v(TAG,"registerObserver start++");
         mObserver = new MediaObserver(new Handler());
         mContext.getContentResolver().registerContentObserver( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,false,mObserver);
+        Log.v(TAG,"registerObserver end++");
     }
 
     @Override
