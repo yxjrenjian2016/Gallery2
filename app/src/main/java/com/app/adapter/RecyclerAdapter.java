@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.app.gallery.R;
+import com.app.mygallery.R;
 import com.app.ui.PictureSlideActivity;
-import com.app.utils.ImageLoader;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +65,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
                 mContext.startActivity(intent);
             }
         });
-        ImageLoader.getInstance(mContext).displayImage(sb.toString(), ((ViewHolder)holder).mImg,ImageLoader.getDefautDisplayImageOptions());
+        Glide.with(mContext).load(sb.toString()).error(R.drawable.pictures_no).into(((ViewHolder)holder).mImg);
+
     }
 
     @Override

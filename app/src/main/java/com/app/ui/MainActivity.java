@@ -16,7 +16,8 @@ import com.app.adapter.ListAdapter;
 import com.app.adapter.RecyclerAdapter;
 import com.app.adapter.SpacesItemDecoration;
 import com.app.base.BaseActivity;
-import com.app.gallery.R;
+
+import com.app.mygallery.R;
 import com.app.presenter.MainPresenter;
 import com.app.utils.FileUtils;
 import com.app.view.LoadingLayout;
@@ -43,8 +44,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
 
         initView();
 

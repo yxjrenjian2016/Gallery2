@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.app.gallery">
+    package="com.app.mygallery">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -20,8 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.app.ui.PictureSlideActivity"
-            android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
     </application>
+
 
 </manifest>

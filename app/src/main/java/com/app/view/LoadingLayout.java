@@ -12,7 +12,8 @@ import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.app.gallery.R;
+import com.app.mygallery.R;
+
 
 /**
  * Created by yixijun on 2016/9/24.

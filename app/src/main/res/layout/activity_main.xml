@@ -22,14 +22,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
                 android:background="@android:color/holo_blue_light"
-                app:layout_scrollFlags="scroll|enterAlways"/>
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"/>
 
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/id_gridView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         </android.support.design.widget.CoordinatorLayout>
 
@@ -38,7 +39,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:background="@android:color/background_light"
             android:divider="#EEE3D9"
             android:dividerHeight="1px"></ListView>
 

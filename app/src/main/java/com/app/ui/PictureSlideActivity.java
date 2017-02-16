@@ -24,7 +24,7 @@ import android.util.Log;
 
 import com.app.adapter.ViewPagerAdapter;
 import com.app.base.BaseActivity;
-import com.app.gallery.R;
+import com.app.mygallery.R;
 import com.app.presenter.PictureSlidePresenter;
 
 import java.util.List;

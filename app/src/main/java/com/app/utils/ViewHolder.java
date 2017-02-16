@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.app.mygallery.R;
+import com.bumptech.glide.Glide;
+
+import java.io.File;
+
 
 public class ViewHolder
 {
@@ -123,13 +128,12 @@ public class ViewHolder
 	 * 为ImageView设置图片
 	 * 
 	 * @param viewId
-	 * @param url
+	 * @param file
 	 * @return
 	 */
-	public ViewHolder setImageByUrl(int viewId, String url)	{
+	public ViewHolder setImageFile(int viewId, File file)	{
 
-
-		ImageLoader.getInstance(mContext).displayImage(url, (ImageView) getView(viewId),ImageLoader.getDefautDisplayImageOptions());
+		Glide.with(mContext).load(file).error(R.drawable.pictures_no).into((ImageView) getView(viewId));
 		return this;
 	}
 

@@ -2,7 +2,8 @@ package com.app.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
-import com.app.gallery.R;
+
+import com.app.mygallery.R;
 
 import java.io.File;
 

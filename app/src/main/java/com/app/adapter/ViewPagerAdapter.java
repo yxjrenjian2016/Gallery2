@@ -5,7 +5,9 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.app.utils.ImageLoader;
+
+import com.app.mygallery.R;
+import com.app.view.ScaleImageView;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -34,11 +36,10 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
-        ImageView iv =new ImageView(mContext);
+        ScaleImageView iv =new ScaleImageView(mContext);
         iv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        //ImageLoader.getInstance(mContext).displayImage("file://"+mResources.get(position),iv,ImageLoader.getDefautDisplayImageOptions());
-        Glide.with(mContext).load(mResources.get(position)).into(iv);
+        Glide.with(mContext).load(mResources.get(position)).error(R.drawable.pictures_no).into(iv);
         container.addView(iv);
         return iv;
     }

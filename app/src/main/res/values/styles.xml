@@ -14,18 +14,17 @@
             backward-compatibility can go here.
 
 
-
         -->
+
     </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-    </style>
-
-    <style name="secondaryStyle">
-        <item name="android:windowEnterAnimation">@anim/slide_in</item>
-        <item name="android:windowExitAnimation">@anim/slide_out</item>
+        <item name="android:statusBarColor">@android:color/holo_blue_light</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@android:color/background_light</item>
     </style>
 
 </resources>
