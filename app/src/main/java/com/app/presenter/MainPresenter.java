@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.app.bean.PathBean;
 import com.app.model.MainModel;
 import com.app.observer.MediaObserver;
 import com.app.presenterInterface.IMainPresenter;
@@ -38,9 +39,9 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
     private Context mContext;
 
     /**
-     * key:文件夹 value：文件夹下的图片文件绝对路径
+     *
      */
-    private HashMap<String, List<String>> mPicFolders = new HashMap<String, List<String>>();
+    private ArrayList<PathBean> mPathBeanArrayList;
 
 
     public MainPresenter(Context context,IMainInterface mainInterface){
@@ -61,34 +62,6 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
     }
 
     @Override
-    public void refreshImage(String path) {
-
-        File f = FileUtils.getParentFile(path);
-        Log.v(TAG, "f+++" + f.getName());
-        List<String> paths = mPicFolders.get(f.getAbsolutePath());
-        mInterface.updateData(paths);
-        mInterface.hideProgress();
-
-    }
-
-    @Override
-    public void refreshFolderPath() {
-        if( mPicFolders != null){
-            Set<String> keyset = mPicFolders.keySet();
-            List<String > list= new ArrayList<String>();
-            //取每个列表的第一个数据
-            for (String key:keyset){
-                List<String> l = mPicFolders.get(key);
-                if( l!= null && l.size()>0){
-                    list.add(l.get(0));
-                }
-            }
-            mInterface.updateDrawerData(list);
-        }
-
-    }
-
-    @Override
     public void removeAllImage() {
         getNoImage(this.getClass().getName());
     }
@@ -102,23 +75,21 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
     }
 
     @Subscriber(tag = Constants.GET_IMAGE_RESULT, mode = ThreadMode.MAIN)
-    private void getImage(HashMap<String, List<String>> hashMap){
-        Set<String> keyset = hashMap.keySet();
-        String key = keyset.iterator().next();
-        List<String> imgList= hashMap.get(key);
+    private void getImage(ArrayList<PathBean> pathBeanArrayList){
+
         mInterface.hideProgress();
-        if(imgList != null && imgList.size() > 0){
-            if( (mPicFolders != null) && (mPicFolders.size() > 0)){//不是第一次
-                mInterface.updateData(imgList);
+        if(pathBeanArrayList != null && pathBeanArrayList.size() > 0){
+            if( (mPathBeanArrayList != null) && (mPathBeanArrayList.size() > 0)){//不是第一次
+                mInterface.updateData(pathBeanArrayList);
             }else {
-                mInterface.showData(imgList);//第一次加载数据
+                mInterface.showData(pathBeanArrayList);//第一次加载数据
             }
-            mPicFolders = hashMap;
+            mPathBeanArrayList = pathBeanArrayList;
         }else {
             mInterface.showNoData();
         }
 
-        refreshFolderPath();
+       // refreshFolderPath();
 
     }
 
@@ -126,8 +97,8 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
     private void getNoImage(String from){
         Log.v(TAG,"getNoImage:"+from);
 
-        if( mPicFolders != null){
-            mPicFolders.clear();
+        if( mPathBeanArrayList != null){
+            mPathBeanArrayList.clear();
         }
         mInterface.hideProgress();
         mInterface.showNoData();

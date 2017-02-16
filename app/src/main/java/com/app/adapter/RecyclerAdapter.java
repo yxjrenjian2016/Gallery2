@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.app.bean.PathBean;
 import com.app.mygallery.R;
 import com.app.ui.PictureSlideActivity;
 import com.bumptech.glide.Glide;
@@ -20,52 +22,72 @@ import java.util.List;
  */
 public class RecyclerAdapter extends RecyclerView.Adapter {
 
-    private Context mContext;
-    private ArrayList<String> mDatas;
+    public static final int TYPE_TITLE = 0;
+    public static final int TYPE_ITEM = 1;
 
-    public RecyclerAdapter(Context context, List<String> data){
+    private Context mContext;
+    private ArrayList<PathBean> mDatas;
+
+    public RecyclerAdapter(Context context, List<PathBean> data){
         mContext = context;
-        mDatas = (ArrayList<String>) data;
+        mDatas = (ArrayList<PathBean>) data;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
+    public static class ImgViewHolder extends RecyclerView.ViewHolder
     {
-        public ViewHolder(View arg0)
+        ImageView mImg;
+        public ImgViewHolder(View arg0)
         {
             super(arg0);
+            mImg = (ImageView)arg0.findViewById(R.id.id_item_image);
         }
-        ImageView mImg;
     }
 
-    public void updateData( List<String> data){
-        mDatas = (ArrayList<String>) data;
+    public static class TxtViewHolder extends RecyclerView.ViewHolder
+    {
+        TextView mTitle;
+        public TxtViewHolder(View arg0)
+        {
+            super(arg0);
+            mTitle = (TextView)arg0.findViewById(R.id.id_item_title);
+        }
+
+    }
+
+    public void updateData( List<PathBean> data){
+        mDatas = (ArrayList<PathBean>) data;
         this.notifyDataSetChanged();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.grid_item,parent,false);
-        ViewHolder viewHolder= new ViewHolder(v);
-        viewHolder.mImg = (ImageView) v.findViewById(R.id.id_item_image);
-        return viewHolder;
+        View v = null;
+        switch (viewType){
+            case TYPE_TITLE:
+                v = LayoutInflater.from(mContext).inflate(R.layout.grid_title,parent,false);
+                return new TxtViewHolder(v);
+            case TYPE_ITEM:
+                v = LayoutInflater.from(mContext).inflate(R.layout.grid_item,parent,false);
+                return new ImgViewHolder(v);
+        }
+        return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        StringBuilder sb = new StringBuilder("file://");
-        sb.append(mDatas.get(position));
-        ((ViewHolder)holder).mImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putStringArrayListExtra("data",mDatas);
-                intent.putExtra("index",position);
-                intent.setClass(mContext, PictureSlideActivity.class);
-                mContext.startActivity(intent);
-            }
-        });
-        Glide.with(mContext).load(sb.toString()).error(R.drawable.pictures_no).into(((ViewHolder)holder).mImg);
+        switch (holder.getItemViewType()){
+            case TYPE_TITLE:
+                TxtViewHolder txtHolder = (TxtViewHolder)holder;
+                txtHolder.mTitle.setText(mDatas.get(position).getPath());
+                break;
+            case TYPE_ITEM:
+                ImgViewHolder imgHolder = (ImgViewHolder)holder;
+                StringBuilder sb = new StringBuilder(mDatas.get(position).getPath());
+                Glide.with(mContext).load(sb.toString()).error(R.drawable.pictures_no).into(imgHolder.mImg);
+
+                break;
+        }
 
     }
 
@@ -79,6 +101,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+
+        if( mDatas.get(position).isHasChild()){
+            return TYPE_TITLE;
+        }
+        return TYPE_ITEM;
     }
+
 }

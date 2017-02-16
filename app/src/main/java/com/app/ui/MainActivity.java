@@ -17,6 +17,7 @@ import com.app.adapter.RecyclerAdapter;
 import com.app.adapter.SpacesItemDecoration;
 import com.app.base.BaseActivity;
 
+import com.app.bean.PathBean;
 import com.app.mygallery.R;
 import com.app.presenter.MainPresenter;
 import com.app.utils.FileUtils;
@@ -53,25 +54,28 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
     }
 
     @Override
-    public void showData(List<String> paths) {
+    public void showData(final List<PathBean> paths) {
 
         mAdapter = new RecyclerAdapter(MainActivity.this, paths);
         mRecyclerView.setAdapter(mAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
-
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                switch (mAdapter.getItemViewType(position)){
+                    case RecyclerAdapter.TYPE_TITLE:
+                        return 3;
+                    case RecyclerAdapter.TYPE_ITEM:
+                        return 1;
+                }
+                return 0;
+            }
+        });
         mRecyclerView.setLayoutManager(layoutManager);
+
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelOffset(R.dimen.gl_3_dp)));
 
         mRecyclerView.setVisibility(View.VISIBLE);
-
-        if( paths != null && paths.size() > 0){
-            String path = paths.get(0);
-            mToolBar.setTitle(FileUtils.getDisplayTextForExtPath(MainActivity.this,FileUtils.getParentFile(path).getAbsolutePath()));
-            mToolBar.setSubtitle(paths.size() + getResources().getString(R.string.piece));
-        }
-
-        //mImageCountTx.setText(paths.size() + getResources().getString(R.string.piece));
-        //mNoPictureTx.setVisibility(View.GONE);
     }
 
     @Override
@@ -85,19 +89,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
     }
 
     @Override
-    public void updateData(List<String> paths) {
+    public void updateData(List<PathBean> paths) {
 
         if( this.isFinishing()){
             return;
         }
 
         mAdapter.updateData(paths);
-        mToolBar.setSubtitle(paths.size() + getResources().getString(R.string.piece));
-        if( paths != null && paths.size() > 0){
-            String path = paths.get(0);
-            mToolBar.setTitle(FileUtils.getDisplayTextForExtPath(MainActivity.this,FileUtils.getParentFile(path).getAbsolutePath()));
-        }
-
     }
 
     @Override
@@ -134,7 +132,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         }
         mListView.setAdapter(mListAdapter);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       /* mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mPresenter.refreshImage(list.get(position));
@@ -143,7 +141,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
                     mDrawerLayout.closeDrawer(Gravity.RIGHT);
                 }
             }
-        });
+        });*/
     }
 
     private void initData(){
@@ -161,11 +159,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         mLoadingLayout = (LoadingLayout)findViewById(R.id.progress);
 
         mToolBar = (Toolbar)findViewById(R.id.toolbar);
+        mToolBar.setTitle("Picture");
         setSupportActionBar(mToolBar);
         mRecyclerView = (RecyclerView) findViewById(R.id.id_gridView);
-
-        //mNoPictureTx = (TextView)findViewById(R.id.no_picture_imply);
-
         mDrawerLayout = (DrawerLayout)findViewById(R.id.id_drawer);
         mListView = (ListView)findViewById(R.id.id_list);
 
@@ -180,12 +176,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         if( mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
             mDrawerLayout.closeDrawer(Gravity.RIGHT);
         }
-/*
-        if(mProgressDialog != null){
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }*/
-        
     }
 
 }
