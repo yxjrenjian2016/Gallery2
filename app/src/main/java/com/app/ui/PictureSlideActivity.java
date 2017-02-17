@@ -36,7 +36,7 @@ public class PictureSlideActivity extends BaseActivity<PictureSlidePresenter> {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_pictureslide);
 
         Intent intent = this.getIntent();
         if (intent == null) {

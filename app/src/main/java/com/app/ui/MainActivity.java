@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements IMainInterface {
-    private static final String TAG = "main";
+    private static final String TAG = "activity_pictureslide";
 
     private LoadingLayout mLoadingLayout;
 

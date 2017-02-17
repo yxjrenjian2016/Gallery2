@@ -84,9 +84,28 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
                 break;
             case TYPE_ITEM:
                 ImgViewHolder imgHolder = (ImgViewHolder)holder;
-                StringBuilder sb = new StringBuilder(mDatas.get(position).getPath());
-                Glide.with(mContext).load(sb.toString()).error(R.drawable.pictures_no).into(imgHolder.mImg);
-
+                Glide.with(mContext).load(mDatas.get(position).getPath()).error(R.drawable.pictures_no).into(imgHolder.mImg);
+                imgHolder.mImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String parent = mDatas.get(position).getParentPath();
+                        int index = 0;
+                        ArrayList<String> paths = new ArrayList<String>();
+                        for( PathBean bean: mDatas){
+                            if( bean.getParentPath().equals(parent)){
+                                paths.add(bean.getPath());
+                                if( bean.getPath().equals(mDatas.get(position).getPath())){
+                                    index = paths.size() -1;
+                                }
+                            }
+                        }
+                        Intent intent = new Intent();
+                        intent.putStringArrayListExtra("data",paths);
+                        intent.putExtra("index",index);
+                        intent.setClass(mContext, PictureSlideActivity.class);
+                        mContext.startActivity(intent);
+                    }
+                });
                 break;
         }
 
