@@ -27,22 +27,21 @@
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/id_gridView"
+            android:id="@+id/id_localimage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         </android.support.design.widget.CoordinatorLayout>
 
-        <ListView
-            android:id="@+id/id_list"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/id_netimage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:divider="#EEE3D9"
-            android:dividerHeight="1px"></ListView>
-
+            android:layout_gravity="end"/>
     </android.support.v4.widget.DrawerLayout>
+
+
 
     <com.app.view.LoadingLayout
         android:id="@+id/progress"

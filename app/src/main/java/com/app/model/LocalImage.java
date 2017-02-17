@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -38,7 +39,7 @@ public class LocalImage {
     public LocalImage(){
     }
 
-    public void getAllImage(final Context context){
+    public void getAllImage(final Context context) {
 
         Observable.create(new Observable.OnSubscribe<ArrayList<PathBean>>() {
             @Override
@@ -49,6 +50,7 @@ public class LocalImage {
                 subscriber.onCompleted();
             }
         }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<ArrayList<PathBean>>() {
                     @Override
                     public void call(ArrayList<PathBean> pathBeen) {

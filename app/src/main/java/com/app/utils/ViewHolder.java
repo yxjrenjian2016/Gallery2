@@ -114,20 +114,6 @@ public class ViewHolder
 	 * 为ImageView设置图片
 	 * 
 	 * @param viewId
-	 * @param bm
-	 * @return
-	 */
-	public ViewHolder setImageBitmap(int viewId, Bitmap bm)
-	{
-		ImageView view = getView(viewId);
-		view.setImageBitmap(bm);
-		return this;
-	}
-
-	/**
-	 * 为ImageView设置图片
-	 * 
-	 * @param viewId
 	 * @param file
 	 * @return
 	 */

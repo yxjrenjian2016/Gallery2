@@ -7,6 +7,7 @@ import org.simple.eventbus.EventBus;
  */
 public class BasePresenter {
 
+
     public  BasePresenter(){
         init();
     }
@@ -18,7 +19,5 @@ public class BasePresenter {
     public void clear(){
        // EventBus.getDefault().unregister(this);
     }
-
-
 
 }

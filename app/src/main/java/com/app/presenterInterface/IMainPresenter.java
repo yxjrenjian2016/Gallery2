@@ -3,13 +3,13 @@ package com.app.presenterInterface;
 public interface IMainPresenter {
 
     /**
-     * 请求图片
+     * 请求本地图片
      */
-    void requestImage();
-
+    void requestLocalImage();
 
     /**
-     * 清除所有图片
+     * 请求网络图片
+     * @param page
      */
-    void removeAllImage();
+    void requestNetImage(int page);
 }

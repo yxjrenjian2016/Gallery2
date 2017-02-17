@@ -1,7 +1,9 @@
 package com.app.viewinterface;
 
+import com.app.bean.NetImageBean;
 import com.app.bean.PathBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,18 +15,12 @@ public interface IMainInterface {
      * 显示图片
      * @param paths 图片路径
      */
-    void showData(List<PathBean> paths);
+    void refreshLocalImage(List<PathBean> paths);
 
     /**
      * 没有图片
      */
     void showNoData();
-
-    /**
-     * 更新图片s
-     * @param paths
-     */
-    void updateData(List<PathBean> paths);
 
 
     /**
@@ -49,8 +45,15 @@ public interface IMainInterface {
     void hideProgress();
 
     /**
-     * 更新文件夹列表数据
-     * @param list
+     * 显示网络图片
+     * @param imageBeens
      */
-    void updateDrawerData(List<String> list);
+    void refreshNetImage(ArrayList<NetImageBean> imageBeens);
+
+    /**
+     * 网络出错
+     */
+    void showNetError();
+
+
 }
