@@ -15,6 +15,7 @@ import com.app.ui.PictureSlideActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**

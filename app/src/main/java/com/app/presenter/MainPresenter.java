@@ -8,21 +8,17 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.app.bean.PathBean;
-import com.app.model.MainModel;
+import com.app.model.LocalImage;
 import com.app.observer.MediaObserver;
 import com.app.presenterInterface.IMainPresenter;
 import com.app.receiver.SDReceiver;
 import com.app.utils.Constants;
-import com.app.utils.FileUtils;
 import com.app.viewinterface.IMainInterface;
 import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.LinkedList;
 
 /**
  * Created on 16-8-18.
@@ -30,10 +26,9 @@ import java.util.Set;
 public class MainPresenter extends BasePresenter implements IMainPresenter{
 
     private static final String TAG = "MainPresenter";
-    private static final int MEDIASTORE_CHANGE = 1;
 
     private IMainInterface mInterface;
-    private MainModel mModel;
+    private LocalImage mLocalImage;
     private SDReceiver mReceiver;
     private  MediaObserver mObserver;
     private Context mContext;
@@ -48,7 +43,7 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
         super();
         mContext = context;
         mInterface = mainInterface;
-        mModel = new MainModel(context);
+        mLocalImage = new LocalImage();
 
         registerReceiver();
         registerObserver();
@@ -67,15 +62,15 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
     }
 
 
-    @Subscriber(tag = Constants.REQUEST_IMAGE, mode = ThreadMode.MAIN)
+    @Subscriber(tag = Constants.REQUEST_IMAGE, mode = ThreadMode.ASYNC)
     public void requestImageFromModel(String from) {
         Log.v(TAG,"requestImageFromModel+"+from);
 
-        mModel.getAllImage();
+        mLocalImage.getAllImage(mContext);
     }
 
     @Subscriber(tag = Constants.GET_IMAGE_RESULT, mode = ThreadMode.MAIN)
-    private void getImage(ArrayList<PathBean> pathBeanArrayList){
+    private void getImageResult(ArrayList<PathBean> pathBeanArrayList){
 
         mInterface.hideProgress();
         if(pathBeanArrayList != null && pathBeanArrayList.size() > 0){

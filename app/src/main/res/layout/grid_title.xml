@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:gravity="center"
-        android:textSize="10sp" />
+        android:gravity="center_vertical"
+        android:textSize="@dimen/gl_tx_size" />
 
 </RelativeLayout>

@@ -159,7 +159,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainIn
         mLoadingLayout = (LoadingLayout)findViewById(R.id.progress);
 
         mToolBar = (Toolbar)findViewById(R.id.toolbar);
-        mToolBar.setTitle("Picture");
+        mToolBar.setTitle(R.string.app_name);
         setSupportActionBar(mToolBar);
         mRecyclerView = (RecyclerView) findViewById(R.id.id_gridView);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.id_drawer);

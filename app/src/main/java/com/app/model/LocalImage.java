@@ -18,6 +18,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,29 +31,20 @@ import rx.schedulers.Schedulers;
 /**
  * Created on 16-8-17.
  */
-public class MainModel {
+public class LocalImage {
 
-    private static final String TAG = "MainModel";
+    private static final String TAG = "LocalImage";
 
-    private Context mContext;
-
-
-    public MainModel(Context context){
-        mContext = context;
+    public LocalImage(){
     }
 
-    @Subscriber(tag = Constants.REQUEST_IMAGE, mode = ThreadMode.ASYNC)
-    public void getAllImage(){
+    public void getAllImage(final Context context){
 
         Observable.create(new Observable.OnSubscribe<ArrayList<PathBean>>() {
             @Override
             public void call(rx.Subscriber<? super ArrayList<PathBean>> subscriber) {
 
-                ArrayList<PathBean> paths = buildHashMapFromContentResolver();
-                for (PathBean bean:paths
-                     ) {
-                    Log.v(TAG,"pic path:" + bean.getPath());
-                }
+                ArrayList<PathBean> paths = buildHashMapFromContentResolver(context);
                 subscriber.onNext(paths);
                 subscriber.onCompleted();
             }
@@ -83,12 +76,12 @@ public class MainModel {
      * 这个位置是为了后续先显示目录，再显示该目录下的图片做准备。
      * @return
      */
-    private ArrayList<PathBean> buildHashMapFromContentResolver(){
+    private ArrayList<PathBean> buildHashMapFromContentResolver(Context context){
 
-        HashMap<String, List<PathBean>> folderMap = new HashMap<String, List<PathBean>>();
+        LinkedHashMap<String, List<PathBean>> folderMap = new LinkedHashMap<String, List<PathBean>>();
 
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        ContentResolver mContentResolver = mContext.getContentResolver();
+        ContentResolver mContentResolver = context.getContentResolver();
 
         Cursor cursor = mContentResolver.query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, MediaStore.Images.Media.DATE_ADDED + " DESC ");
 
@@ -126,21 +119,19 @@ public class MainModel {
      * @param folderMap 目录为key和该目录下的图片列表为value的键值对
      * @return
      */
-    private ArrayList<PathBean> buildPathBean( HashMap<String, List<PathBean>> folderMap ){
+    private ArrayList<PathBean> buildPathBean(HashMap<String, List<PathBean>> folderMap ){
         ArrayList<PathBean> paths = new ArrayList<PathBean>();
         if( folderMap != null){
             Iterator iterator = folderMap.entrySet().iterator();
 
             while (iterator.hasNext()){
                Map.Entry entry = (Map.Entry) iterator.next();
-               ArrayList<PathBean> pathBeans = (ArrayList<PathBean>) entry.getValue();
+                List<PathBean> pathBeans = (List<PathBean>) entry.getValue();
+                Log.v(TAG,"buildPathBean++"+entry.getKey().toString());
                paths.add(new PathBean((String) entry.getKey(),true));//目录
                paths.addAll(pathBeans);
             }
         }
-
         return paths;
     }
-
-
 }
