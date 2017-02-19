@@ -7,5 +7,7 @@
     <string name="loading">Loading...</string>
     <string name="udisk">Udisk</string>
     <string name="sd_card">Sdcard</string>
+    <string name="local">Local</string>
+    <string name="net">Net</string>
 
 </resources>

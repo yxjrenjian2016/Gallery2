@@ -3,50 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/id_drawer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"   >
-
-        <android.support.design.widget.CoordinatorLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
-                android:background="@android:color/holo_blue_light"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"/>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/id_localimage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-        </android.support.design.widget.CoordinatorLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/id_netimage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"/>
-    </android.support.v4.widget.DrawerLayout>
-
-
-
-    <com.app.view.LoadingLayout
-        android:id="@+id/progress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"></com.app.view.LoadingLayout>
+  <android.support.v4.view.ViewPager
+      android:id="@+id/viewpager"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 
 </RelativeLayout>
