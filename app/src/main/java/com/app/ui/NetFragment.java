@@ -18,6 +18,7 @@ import com.app.mygallery.R;
 import com.app.presenter.LocalPresenter;
 import com.app.presenter.NetPresenter;
 import com.app.view.LoadingLayout;
+import com.app.view.WrapContentLinearLayoutManager;
 import com.app.viewinterface.INetInterface;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class NetFragment extends BaseFragment<NetPresenter> implements INetInter
     private Context mContext;
     private RecyclerView mNetRecyclerView;
     private NetRecyclerAdapter mNetRecyclerAdapter;
-    private LinearLayoutManager mNetLinearLayoutManager;
+    private WrapContentLinearLayoutManager mNetLinearLayoutManager;
 
     private LoadingLayout mLoadingLayout;
     private Toolbar mToolBar;
@@ -74,7 +75,7 @@ public class NetFragment extends BaseFragment<NetPresenter> implements INetInter
         if( mNetRecyclerAdapter == null){
             mNetRecyclerAdapter = new NetRecyclerAdapter(mContext,imageBeens);
             mNetRecyclerView.setAdapter(mNetRecyclerAdapter);
-            mNetLinearLayoutManager = new LinearLayoutManager(mContext);
+            mNetLinearLayoutManager = new WrapContentLinearLayoutManager(mContext,LinearLayoutManager.VERTICAL, false);
 
             mNetRecyclerView.setLayoutManager(mNetLinearLayoutManager);
 
@@ -88,19 +89,13 @@ public class NetFragment extends BaseFragment<NetPresenter> implements INetInter
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-                    Log.v(TAG,"dy+"+dy + ","+mNetLinearLayoutManager.findLastVisibleItemPosition());
+                    //Log.v(TAG,"dy+"+dy + ","+mNetLinearLayoutManager.findLastVisibleItemPosition());
 
                     if( dy > 0 && !mNetRecyclerAdapter.getLoadingState()){
                         if( mNetLinearLayoutManager.findLastVisibleItemPosition() >= (mNetRecyclerAdapter.getItemCount() - 1)){
                             mNetRecyclerAdapter.loadingStart();
                             mNetImageIndex++;
                             mPresenter.requestNetImage(mNetImageIndex);
-                            mNetRecyclerView.post(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                }
-                            });
                         }
                     }
                 }

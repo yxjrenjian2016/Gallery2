@@ -51,7 +51,9 @@ public class NetPresenter extends BasePresenter implements INetPresenter {
 
     @Override
     public void requestNetImage(int page) {
-        mInterface.showProgress();
+        if( page == 1){
+            mInterface.showProgress();
+        }
         mSubscription = Network.INSTANCE.getApiService().getNetImage(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

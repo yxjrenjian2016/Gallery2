@@ -5,30 +5,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 
-import com.app.adapter.NetRecyclerAdapter;
-import com.app.adapter.RecyclerAdapter;
-import com.app.adapter.SpacesItemDecoration;
 import com.app.base.BaseActivity;
 
-import com.app.bean.NetImageBean;
-import com.app.bean.PathBean;
 import com.app.mygallery.R;
 import com.app.presenter.MainPresenter;
-import com.app.view.LoadingLayout;
 import com.app.viewinterface.IMainInterface;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements IMainInterface {
     private static final String TAG = "MainActivity";

@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.app.adapter.RecyclerAdapter;
+import com.app.adapter.LocalRecyclerAdapter;
 import com.app.adapter.SpacesItemDecoration;
 import com.app.bean.PathBean;
 import com.app.mygallery.R;
@@ -31,7 +31,7 @@ public class LocalFragment extends BaseFragment<LocalPresenter> implements ILoca
     private LoadingLayout mLoadingLayout;
 
     private RecyclerView mRecyclerView;
-    private RecyclerAdapter mAdapter;
+    private LocalRecyclerAdapter mAdapter;
     private Toolbar mToolBar;
     @Override
     public void onAttach(Context context) {
@@ -72,16 +72,16 @@ public class LocalFragment extends BaseFragment<LocalPresenter> implements ILoca
 
         if( mAdapter == null){
             //第一次加载显示
-            mAdapter = new RecyclerAdapter(mContext, paths);
+            mAdapter = new LocalRecyclerAdapter(mContext, paths);
             mRecyclerView.setAdapter(mAdapter);
             GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
             layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
                     switch (mAdapter.getItemViewType(position)){
-                        case RecyclerAdapter.TYPE_TITLE:
+                        case LocalRecyclerAdapter.TYPE_TITLE:
                             return 3;
-                        case RecyclerAdapter.TYPE_ITEM:
+                        case LocalRecyclerAdapter.TYPE_ITEM:
                             return 1;
                     }
                     return 0;

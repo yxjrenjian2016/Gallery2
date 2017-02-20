@@ -2,11 +2,13 @@ package com.app.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.app.bean.NetImageBean;
 import com.app.mygallery.R;
@@ -30,7 +32,10 @@ public class NetRecyclerAdapter extends RecyclerView.Adapter {
     }
 
     public void refreshData(ArrayList<NetImageBean> beans){
-        mDatas = beans;
+        if( mDatas == null){
+            mDatas =  new ArrayList<>();
+        }
+        mDatas.addAll(beans);
         notifyDataSetChanged();
     }
 
@@ -41,7 +46,7 @@ public class NetRecyclerAdapter extends RecyclerView.Adapter {
         mLoading = true;
         int pos=0;
         if( mDatas != null){
-            pos = mDatas.size() - 1;
+            pos = getItemCount() - 1;
         }
         notifyItemInserted(pos);
     }
@@ -68,7 +73,7 @@ public class NetRecyclerAdapter extends RecyclerView.Adapter {
         View v = null;
         switch (viewType){
             case TYPE_NET_ITEM:
-                v = LayoutInflater.from(mContext).inflate(R.layout.grid_item,parent,false);
+                v = LayoutInflater.from(mContext).inflate(R.layout.grid_net_item,parent,false);
                 return new ImgViewHolder(v);
             case TYPE_NET_LOADING:
                 v = LayoutInflater.from(mContext).inflate(R.layout.grid_net_loading,parent,false);
@@ -84,6 +89,8 @@ public class NetRecyclerAdapter extends RecyclerView.Adapter {
             case TYPE_NET_ITEM:
                 ImgViewHolder imgHolder = (ImgViewHolder)holder;
                 Glide.with(mContext).load(mDatas.get(position).getUrl()).error(R.drawable.pictures_no).into(imgHolder.mImg);
+                imgHolder.mDescTxt.setText(mDatas.get(position).getDesc());
+                Log.v("NetRecyclerAdapter","pos+"+position + ","+mDatas.get(position).getUrl());
                 break;
             case TYPE_NET_LOADING:
                 LoadingViewHolder loadingHolder = (LoadingViewHolder)holder;
@@ -118,10 +125,12 @@ public class NetRecyclerAdapter extends RecyclerView.Adapter {
     public static class ImgViewHolder extends RecyclerView.ViewHolder
     {
         ImageView mImg;
+        TextView mDescTxt;
         public ImgViewHolder(View arg0)
         {
             super(arg0);
             mImg = (ImageView)arg0.findViewById(R.id.id_item_image);
+            mDescTxt = (TextView)arg0.findViewById(R.id.image_desc);
         }
     }
 

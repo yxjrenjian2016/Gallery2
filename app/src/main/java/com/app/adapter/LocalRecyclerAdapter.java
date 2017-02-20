@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by yixijun on 2016/9/21.
  */
-public class RecyclerAdapter extends RecyclerView.Adapter {
+public class LocalRecyclerAdapter extends RecyclerView.Adapter {
 
     public static final int TYPE_TITLE = 0;
     public static final int TYPE_ITEM = 1;
@@ -29,7 +29,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private ArrayList<PathBean> mDatas;
 
-    public RecyclerAdapter(Context context, List<PathBean> data){
+    public LocalRecyclerAdapter(Context context, List<PathBean> data){
         mContext = context;
         mDatas = (ArrayList<PathBean>) data;
     }

@@ -10,5 +10,6 @@
     <dimen name="gl_20_dp">20dp</dimen>
     <dimen name="gl_50_dp">50dp</dimen>
     <dimen name="gl_120_dp">120dp</dimen>
+    <dimen name="gl_300_dp">300dp</dimen>
 
 </resources>
