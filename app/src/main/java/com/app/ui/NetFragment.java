@@ -63,7 +63,7 @@ public class NetFragment extends BaseFragment<NetPresenter> implements INetInter
     }
 
     private void initData(){
-        mPresenter = new NetPresenter(mContext,this);
+        mPresenter = new NetPresenter(this);
         mPresenter.requestNetImage(mNetImageIndex);
     }
 
@@ -92,7 +92,7 @@ public class NetFragment extends BaseFragment<NetPresenter> implements INetInter
                     //Log.v(TAG,"dy+"+dy + ","+mNetLinearLayoutManager.findLastVisibleItemPosition());
 
                     if( dy > 0 && !mNetRecyclerAdapter.getLoadingState()){
-                        if( mNetLinearLayoutManager.findLastVisibleItemPosition() >= (mNetRecyclerAdapter.getItemCount() - 1)){
+                        if( mNetLinearLayoutManager.findLastVisibleItemPosition() >= (mNetRecyclerAdapter.getItemCount() - 2)){
                             mNetRecyclerAdapter.loadingStart();
                             mNetImageIndex++;
                             mPresenter.requestNetImage(mNetImageIndex);
@@ -119,6 +119,8 @@ public class NetFragment extends BaseFragment<NetPresenter> implements INetInter
     @Override
     public void showNetError() {
         mNetRecyclerView.setVisibility(View.GONE);
+        mLoadingLayout.setErrorMessage(getString(R.string.net_error));
+        mLoadingLayout.setState(LoadingLayout.LOADING_ERROR);
 
     }
 }

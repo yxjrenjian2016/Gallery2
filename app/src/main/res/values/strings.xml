@@ -9,5 +9,6 @@
     <string name="sd_card">Sdcard</string>
     <string name="local">Local</string>
     <string name="net">Net</string>
+    <string name="net_error">Network error</string>
 
 </resources>

@@ -3,6 +3,7 @@ package com.app.presenter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -13,6 +14,7 @@ import com.app.model.NetImage;
 import com.app.network.Network;
 import com.app.observer.MediaObserver;
 import com.app.presenterInterface.IMainPresenter;
+import com.app.receiver.NetworkReceiver;
 import com.app.receiver.SDReceiver;
 import com.app.utils.Constants;
 import com.app.viewinterface.IMainInterface;
@@ -37,6 +39,7 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
     private IMainInterface mInterface;
 
     private SDReceiver mReceiver;
+    private NetworkReceiver mNetReceiver;
     private  MediaObserver mObserver;
     private Context mContext;
 
@@ -71,6 +74,12 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
             mContext.registerReceiver(mReceiver, f);
         }
 
+        if( mNetReceiver == null){
+            IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+            mNetReceiver = new NetworkReceiver();
+            mContext.registerReceiver(mNetReceiver,filter);
+        }
+
         Log.v(TAG,"registerReceiver end++");
     }
 
@@ -87,6 +96,9 @@ public class MainPresenter extends BasePresenter implements IMainPresenter{
         if(mReceiver != null){
             mContext.unregisterReceiver(mReceiver);
             mReceiver = null;
+        }
+        if( mNetReceiver != null){
+            mContext.unregisterReceiver(mNetReceiver);
         }
         if( mObserver != null){
             mContext.getContentResolver().unregisterContentObserver(mObserver);

@@ -34,7 +34,7 @@ public class LocalRecyclerAdapter extends RecyclerView.Adapter {
         mDatas = (ArrayList<PathBean>) data;
     }
 
-    public static class ImgViewHolder extends RecyclerView.ViewHolder
+    public class ImgViewHolder extends RecyclerView.ViewHolder
     {
         ImageView mImg;
         public ImgViewHolder(View arg0)
@@ -44,7 +44,7 @@ public class LocalRecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public static class TxtViewHolder extends RecyclerView.ViewHolder
+    public class TxtViewHolder extends RecyclerView.ViewHolder
     {
         TextView mTitle;
         public TxtViewHolder(View arg0)

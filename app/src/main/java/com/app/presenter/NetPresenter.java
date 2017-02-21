@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.app.bean.NetImageBean;
 import com.app.bean.PathBean;
 import com.app.model.LocalImage;
 import com.app.model.NetImage;
@@ -38,16 +39,24 @@ public class NetPresenter extends BasePresenter implements INetPresenter {
 
     private INetInterface mInterface;
 
-    private Context mContext;
     private Subscription mSubscription;
 
+    private ArrayList<NetImageBean> mNetImageList;
 
-    public NetPresenter(Context context, INetInterface netInterface){
+    public NetPresenter(INetInterface netInterface){
         super();
-        mContext = context;
         mInterface = netInterface;
     }
 
+    @Subscriber(tag = Constants.NETWORK_CONNECTED, mode = ThreadMode.MAIN)
+    public void retryGetIamge(int type) {
+        Log.v(TAG,"retryGetIamge+"+type);
+
+        //当页面没有数据时收到网络连接后重新获取数据
+        if( mNetImageList == null || mNetImageList.size() == 0){
+            requestNetImage(1);
+        }
+    }
 
     @Override
     public void requestNetImage(int page) {
@@ -66,6 +75,9 @@ public class NetPresenter extends BasePresenter implements INetPresenter {
                     @Override
                     public void onError(Throwable e) {
                         mInterface.hideProgress();
+                        if( mNetImageList == null || mNetImageList.size() == 0){
+                            mInterface.showNetError();
+                        }
                         e.printStackTrace();
                         Log.v(TAG,"onError+"+e.getMessage() + e.toString());
                     }
@@ -73,14 +85,16 @@ public class NetPresenter extends BasePresenter implements INetPresenter {
                     @Override
                     public void onNext(NetImage netImage) {
                         Log.v(TAG,"onNext netImage null+"+(netImage == null) );
-                        if( netImage != null){
-                           Log.v(TAG,"list+"+(netImage.getResults()== null));
-                        }
                         mInterface.hideProgress();
-                        mInterface.refreshNetImage(netImage.getResults());
+                        if( netImage != null){
+                            mNetImageList = netImage.getResults();
+                            mInterface.refreshNetImage(mNetImageList);
+                        }
                     }
                 });
     }
+
+
 
     @Override
     public void clear() {

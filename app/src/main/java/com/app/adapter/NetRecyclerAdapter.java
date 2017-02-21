@@ -44,11 +44,6 @@ public class NetRecyclerAdapter extends RecyclerView.Adapter {
      */
     public void loadingStart(){
         mLoading = true;
-        int pos=0;
-        if( mDatas != null){
-            pos = getItemCount() - 1;
-        }
-        notifyItemInserted(pos);
     }
 
     /**
@@ -57,11 +52,6 @@ public class NetRecyclerAdapter extends RecyclerView.Adapter {
     public void loadingComplete(){
 
         mLoading = false;
-        int pos=0;
-        if( mDatas != null){
-            pos = mDatas.size() - 1;
-        }
-        notifyItemRemoved(pos);
     }
 
     public boolean getLoadingState(){
@@ -94,14 +84,9 @@ public class NetRecyclerAdapter extends RecyclerView.Adapter {
                 break;
             case TYPE_NET_LOADING:
                 LoadingViewHolder loadingHolder = (LoadingViewHolder)holder;
-                loadingHolder.mProgressBar.setVisibility(mLoading? View.VISIBLE : View.INVISIBLE);
+                //loadingHolder.mProgressBar.setVisibility(mLoading? View.VISIBLE : View.INVISIBLE);
                 break;
         }
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
     @Override
@@ -109,7 +94,8 @@ public class NetRecyclerAdapter extends RecyclerView.Adapter {
         if( mDatas == null){
             return 0;
         }
-        return mDatas.size();
+        Log.v("NetRecyclerAdapter","getItemCount+"+mDatas.size());
+        return mDatas.size()+1;
     }
 
     @Override
@@ -122,7 +108,7 @@ public class NetRecyclerAdapter extends RecyclerView.Adapter {
 
 
 
-    public static class ImgViewHolder extends RecyclerView.ViewHolder
+    public class ImgViewHolder extends RecyclerView.ViewHolder
     {
         ImageView mImg;
         TextView mDescTxt;
@@ -134,7 +120,7 @@ public class NetRecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public static class LoadingViewHolder extends RecyclerView.ViewHolder
+    public class LoadingViewHolder extends RecyclerView.ViewHolder
     {
         ProgressBar mProgressBar;
         public LoadingViewHolder(View arg0)

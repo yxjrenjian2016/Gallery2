@@ -9,5 +9,6 @@
     <string name="sd_card">sd卡</string>
     <string name="local">本地</string>
     <string name="net">网络</string>
+    <string name="net_error">网络异常</string>
 
 </resources>

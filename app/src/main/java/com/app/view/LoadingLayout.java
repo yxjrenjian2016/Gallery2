@@ -90,6 +90,10 @@ public class LoadingLayout extends RelativeLayout {
         }
     }
 
+    public void setErrorMessage(String msg){
+        mTextView.setText(msg);
+    }
+
     public void setState(int state){
         Log.v(TAG,"setState:"+state);
         switch (state){
