@@ -32,5 +32,7 @@ public interface INetInterface {
      */
     void showNetError();
 
+    void showLoadMoreError();
+
 
 }

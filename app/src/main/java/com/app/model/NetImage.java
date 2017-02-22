@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 public class NetImage extends BaseModel {
 
+    /**
+     * 服务器返回的json中的结果字段，这里是一个数据列表
+     */
     public ArrayList<NetImageBean> results;
 
     public ArrayList<NetImageBean> getResults() {

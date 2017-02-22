@@ -15,8 +15,8 @@ import com.app.adapter.NetRecyclerAdapter;
 import com.app.adapter.SpacesItemDecoration;
 import com.app.bean.NetImageBean;
 import com.app.mygallery.R;
-import com.app.presenter.LocalPresenter;
 import com.app.presenter.NetPresenter;
+import com.app.utils.Utils;
 import com.app.view.LoadingLayout;
 import com.app.view.WrapContentLinearLayoutManager;
 import com.app.viewinterface.INetInterface;
@@ -91,9 +91,9 @@ public class NetFragment extends BaseFragment<NetPresenter> implements INetInter
                     super.onScrolled(recyclerView, dx, dy);
                     //Log.v(TAG,"dy+"+dy + ","+mNetLinearLayoutManager.findLastVisibleItemPosition());
 
-                    if( dy > 0 && !mNetRecyclerAdapter.getLoadingState()){
+                    if( dy > 0 && !mNetRecyclerAdapter.isLoading() /*&& Utils.isNetworkConnectd()*/){
                         if( mNetLinearLayoutManager.findLastVisibleItemPosition() >= (mNetRecyclerAdapter.getItemCount() - 2)){
-                            mNetRecyclerAdapter.loadingStart();
+                            mNetRecyclerAdapter.setLoadingState(NetRecyclerAdapter.STATE_LOADING);
                             mNetImageIndex++;
                             mPresenter.requestNetImage(mNetImageIndex);
                         }
@@ -101,7 +101,7 @@ public class NetFragment extends BaseFragment<NetPresenter> implements INetInter
                 }
             });
         }else {
-            mNetRecyclerAdapter.loadingComplete();
+            mNetRecyclerAdapter.setLoadingState(NetRecyclerAdapter.STATE_COMPLETE);
             mNetRecyclerAdapter.refreshData(imageBeens);
         }
     }
@@ -122,5 +122,11 @@ public class NetFragment extends BaseFragment<NetPresenter> implements INetInter
         mLoadingLayout.setErrorMessage(getString(R.string.net_error));
         mLoadingLayout.setState(LoadingLayout.LOADING_ERROR);
 
+    }
+
+    @Override
+    public void showLoadMoreError() {
+        mNetImageIndex--;
+        mNetRecyclerAdapter.setLoadingState(NetRecyclerAdapter.STATE_ERROR);
     }
 }

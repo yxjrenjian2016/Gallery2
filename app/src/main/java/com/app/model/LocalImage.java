@@ -32,13 +32,17 @@ import rx.schedulers.Schedulers;
 /**
  * Created on 16-8-17.
  */
-public class LocalImage {
+public class LocalImage extends BaseModel{
 
     private static final String TAG = "LocalImage";
 
     public LocalImage(){
     }
 
+    /**
+     * 从数据库读取图片
+     * @param context
+     */
     public void getAllImage(final Context context) {
 
         Observable.create(new Observable.OnSubscribe<ArrayList<PathBean>>() {

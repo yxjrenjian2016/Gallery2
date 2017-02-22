@@ -8,19 +8,19 @@ import java.util.Date;
 public class NetImageBean {
 
     public String objectId;
-    public String url;
+    public String url;//图片url
     public String type;
-    public String desc;
+    public String desc;//描述
     public String who;
     public boolean used;
     public Date createdAt;
     public Date updatedAt;
     public boolean hasFadedIn=false;
     public Date publishedAt;
-    public int imageWidth;
-    public int imageHeight;
+    /*public int imageWidth;
+    public int imageHeight;*/
 
-    public int getImageHeight() {
+   /* public int getImageHeight() {
         return imageHeight;
     }
 
@@ -34,7 +34,7 @@ public class NetImageBean {
 
     public void setImageWidth(int imageWidth) {
         this.imageWidth = imageWidth;
-    }
+    }*/
 
     public String getObjectId() {
         return objectId;

@@ -1,23 +1,13 @@
 package com.app.presenter;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Handler;
-import android.provider.MediaStore;
 import android.util.Log;
 
+import com.app.adapter.NetRecyclerAdapter;
 import com.app.bean.NetImageBean;
-import com.app.bean.PathBean;
-import com.app.model.LocalImage;
 import com.app.model.NetImage;
 import com.app.network.Network;
-import com.app.observer.MediaObserver;
-import com.app.presenterInterface.IMainPresenter;
 import com.app.presenterInterface.INetPresenter;
-import com.app.receiver.SDReceiver;
 import com.app.utils.Constants;
-import com.app.viewinterface.IMainInterface;
 import com.app.viewinterface.INetInterface;
 
 import org.simple.eventbus.Subscriber;
@@ -76,7 +66,12 @@ public class NetPresenter extends BasePresenter implements INetPresenter {
                     public void onError(Throwable e) {
                         mInterface.hideProgress();
                         if( mNetImageList == null || mNetImageList.size() == 0){
+                            //第一次加载时出错
                             mInterface.showNetError();
+                        }else {
+                            //加载更多时出错
+                            mInterface.showLoadMoreError();
+
                         }
                         e.printStackTrace();
                         Log.v(TAG,"onError+"+e.getMessage() + e.toString());

@@ -48,6 +48,9 @@ public class LocalPresenter extends BasePresenter implements ILocalPresenter {
 
     }
 
+    /**
+     * @param from
+     */
     @Subscriber(tag = Constants.REQUEST_IMAGE, mode = ThreadMode.ASYNC)
     public void requestImageFromModel(String from) {
         Log.v(TAG,"requestImageFromModel+"+from);
@@ -55,6 +58,10 @@ public class LocalPresenter extends BasePresenter implements ILocalPresenter {
         mLocalImage.getAllImage(mContext);
     }
 
+    /**
+     * 获取到图片
+     * @param pathBeanArrayList
+     */
     @Subscriber(tag = Constants.GET_IMAGE_RESULT, mode = ThreadMode.MAIN)
     private void getImageResult(ArrayList<PathBean> pathBeanArrayList){
 
@@ -71,6 +78,10 @@ public class LocalPresenter extends BasePresenter implements ILocalPresenter {
 
     }
 
+    /**
+     * 没有图片
+     * @param from
+     */
     @Subscriber(tag = Constants.GET_NO_IMAGE_RESULT, mode = ThreadMode.MAIN)
     private void getNoImage(String from){
         Log.v(TAG,"getNoImage:"+from);
