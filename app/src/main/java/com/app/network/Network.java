@@ -1,10 +1,14 @@
 package com.app.network;
 
+import android.util.Log;
+
+import com.app.model.BaseModel;
 import com.app.ui.AppContext;
 import com.app.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.util.concurrent.TimeUnit;
 
 
@@ -16,6 +20,11 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  *
@@ -77,5 +86,31 @@ public enum Network {
 
         }
         return mApi;
+    }
+
+    public static <T> Observable.Transformer<BaseModel<T>,T> getResult() {
+
+        return new Observable.Transformer<BaseModel<T>, T>() {
+
+            @Override
+            public Observable<T> call(Observable<BaseModel<T>> baseModelObservable) {
+                return baseModelObservable.flatMap(new Func1<BaseModel<T>, Observable<T>>() {
+                    @Override
+                    public Observable<T> call(final BaseModel<T> tBaseModel) {
+                        if( !tBaseModel.error){
+                            return Observable.create(new Observable.OnSubscribe<T>() {
+                                @Override
+                                public void call(Subscriber<? super T> subscriber) {
+                                    subscriber.onNext(tBaseModel.getResults());
+                                    subscriber.onCompleted();
+                                }
+                            });
+                        }
+                        Log.v("net","error+"+tBaseModel.getResults().toString());
+                        return Observable.error(new Throwable(tBaseModel.getResults().toString()));
+                    }
+                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+            }
+        };
     }
 }

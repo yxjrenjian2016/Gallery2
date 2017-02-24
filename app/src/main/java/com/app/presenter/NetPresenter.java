@@ -54,9 +54,8 @@ public class NetPresenter extends BasePresenter implements INetPresenter {
             mInterface.showProgress();
         }
         mSubscription = Network.INSTANCE.getApiService().getNetImage(page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<NetImage>() {
+                .compose(Network.<ArrayList<NetImageBean>>getResult())
+                .subscribe(new Observer<ArrayList<NetImageBean>>() {
                     @Override
                     public void onCompleted() {
                         Log.v(TAG,"onCompleted+");
@@ -78,11 +77,11 @@ public class NetPresenter extends BasePresenter implements INetPresenter {
                     }
 
                     @Override
-                    public void onNext(NetImage netImage) {
-                        Log.v(TAG,"onNext netImage null+"+(netImage == null) );
+                    public void onNext(ArrayList<NetImageBean> netImageBeanArrayList) {
+                       // Log.v(TAG,"onNext netImage null+"+(netImage == null) );
                         mInterface.hideProgress();
-                        if( netImage != null){
-                            mNetImageList = netImage.getResults();
+                        if( netImageBeanArrayList != null){
+                            mNetImageList = netImageBeanArrayList;
                             mInterface.refreshNetImage(mNetImageList);
                         }
                     }
